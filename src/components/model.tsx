@@ -1,38 +1,41 @@
 import React from "react";
 
+export interface ModelOption {
+  model: string;
+  name: string;
+}
+
 interface ChatSelectorProps {
   chat: string;
   setChat: (chat: string) => void;
+  models: ModelOption[];
+  isLoadingModels: boolean;
 }
 
-const ChatSelector: React.FC<ChatSelectorProps> = ({ chat, setChat }) => {
-  const chatOptions = [
-    { model: "llama3.2:1b", name: "llama1B" },
-    { model: "ministral-3:3b", name: "ministral3B" },
-    { model: "llama3.2:3b", name: "llama3B" },
-    { model: "qwen2.5:1.5b", name: "qwen1B" },
-    { model: "qwen2.5:3b", name: "qwen3B" },
-    { model: "qwen2.5-coder:1.5b", name: "qwen-coder" },
-    {
-      model: "erwan2/DeepSeek-R1-Distill-Qwen-1.5B:latest",
-      name: "qwen1.5B distilled",
-    },
-    { model: "deepscaler:latest", name: "deepscaler" },
-    { model: "deepseek-r1:1.5b", name: "deepseek" },
-  ];
+const ChatSelector: React.FC<ChatSelectorProps> = ({ chat, setChat, models, isLoadingModels }) => {
+  if (isLoadingModels) {
+    return (
+      <div className="flex flex-row gap-1.5 flex-wrap items-center">
+        <span className="font-mono text-[10px] text-[var(--color-text-muted)] animate-pulse uppercase tracking-widest">
+          SYNCING...
+        </span>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-row gap-2 flex-wrap">
-      {chatOptions.map(({ model, name }) => (
+    <div className="flex flex-col gap-2">
+      {models.map(({ model, name }) => (
         <button
+          type="button"
           key={model}
           onClick={() => setChat(model)}
-          className={`px-3.5 py-1.5 font-mono text-sm rounded cursor-pointer
-            transition-colors duration-150
+          className={`pressable w-full text-left px-3 py-2 font-mono text-[10px] uppercase tracking-widest cursor-pointer
+            transition-all duration-150 border
             ${
               chat === model
-                ? "bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 border border-teal-300 dark:border-teal-700"
-                : "text-slate-500 dark:text-slate-400 border border-transparent hover:text-slate-700 dark:hover:text-slate-200 hover:border-slate-200 dark:hover:border-slate-600"
+                ? "bg-[var(--color-bg)] border-[var(--color-accent)] text-[var(--color-accent)] shadow-[2px_2px_0_0_var(--color-border)] translate-x-[-1px] translate-y-[-1px]"
+                : "border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-text)]"
             }`}
         >
           {name}

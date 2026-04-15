@@ -25,30 +25,34 @@ const Sidebar: React.FC<SidebarProps> = ({
   onNewChat,
   onDeleteChat,
 }) => {
-  if (!isOpen) return null;
-
   return (
     <div
-      className="w-64 shrink-0 h-full border-r border-slate-300 dark:border-transparent bg-gray-100 dark:bg-slate-900
-        flex flex-col overflow-hidden"
+      className={`left-sidebar-panel absolute left-0 top-0 z-30 w-72 h-full bg-[var(--color-bg-secondary)] border-r border-[var(--color-border)]
+        flex flex-col overflow-hidden ${isOpen ? "is-open" : "is-closed"}`}
+      aria-hidden={!isOpen}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 h-12 border-b border-slate-300 dark:border-slate-700">
-        <h2 className="font-serif text-base text-xl text-slate-700 dark:text-slate-100 tracking-tight">
-          History
-        </h2>
+      <div className="flex items-center justify-between px-6 h-14 border-b border-[var(--color-border)] bg-[var(--color-bg)]">
+        <div className="flex items-center gap-3">
+          <span className="w-1.5 h-1.5 bg-[var(--color-accent)] inline-block"></span>
+          <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-text)] leading-none">
+            Thread Index
+          </h2>
+        </div>
         <button
+          type="button"
           onClick={onToggle}
-          className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer transition-colors duration-150"
+          className="pressable p-1 border border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-border)] cursor-pointer transition-all duration-150"
+          title="Close sidebar"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4"
+            className="w-3.5 h-3.5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
             strokeWidth={1.5}
           >
+            <title>Close sidebar</title>
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -58,63 +62,76 @@ const Sidebar: React.FC<SidebarProps> = ({
         </button>
       </div>
 
-      {/* New Chat */}
-      <div className="px-3 py-3">
+      <div className="p-4 border-b border-[var(--color-border)] bg-[var(--color-bg-secondary)]">
         <button
+          type="button"
           onClick={onNewChat}
-          className="w-full flex items-center gap-2 px-3 py-2
-            font-mono text-sm text-slate-600 dark:text-slate-300
-            bg-white dark:bg-slate-800 border border-none  dark:border-none rounded
-            hover:border-teal-300 dark:hover:border-teal-700 hover:text-teal-700 dark:hover:text-teal-300
-            transition-colors duration-150 cursor-pointer"
+          className="pressable group w-full flex items-center justify-between px-4 py-2.5
+            font-mono text-[10px] uppercase tracking-widest font-bold 
+            border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text)]
+            hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]
+            shadow-[2px_2px_0_0_var(--color-border)] hover:translate-y-[1px] hover:translate-x-[1px] hover:shadow-[1px_1px_0_0_var(--color-border)]
+            transition-all duration-150 cursor-pointer"
         >
-          <span className="text-base leading-none">+</span>
-          new chat
+          <span>Init Thread</span>
+          <span className="font-sans text-[14px] leading-none opacity-50 group-hover:opacity-100 transition-opacity">
+            +
+          </span>
         </button>
       </div>
 
-      {/* Chat list */}
-      <div className="flex-1 overflow-y-auto px-3 pb-3 space-y-0.5">
+      <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[var(--color-bg-secondary)]">
         {chatHistory.length === 0 && (
-          <p className="font-serif text-xs text-slate-400 text-center mt-8 px-4 italic">
-            No chats yet.
-          </p>
+          <div className="border border-dashed border-[var(--color-border)] p-4 text-center mt-4">
+            <p className="font-mono text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest">
+              [ Empty Index ]
+            </p>
+          </div>
         )}
         {chatHistory.map((chatItem) => (
           <div
             key={chatItem.id}
-            className={`group flex items-center rounded cursor-pointer
-              transition-colors duration-150 border
+            className={`history-item group relative flex items-start flex-col cursor-pointer border p-3
+              transition-colors duration-150
               ${
                 activeChatId === chatItem.id
-                  ? "bg-gray-200 dark:bg-blue-950 border-none dark:border-none"
-                  : "hover:bg-slate-100 dark:hover:bg-slate-800 border-transparent"
+                  ? "bg-[var(--color-bg)] border-[var(--color-accent)]"
+                  : "border-[var(--color-border)] bg-[var(--color-bg)] hover:border-[var(--color-text)]"
               }`}
           >
             <button
+              type="button"
               onClick={() => onSelectChat(chatItem.id)}
-              className="flex-1 text-left px-3 py-2 min-w-0 cursor-pointer"
+              className="w-full text-left cursor-pointer"
             >
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-mono text-[9px] uppercase tracking-widest text-[var(--color-text-muted)]">
+                  REF:{chatItem.id.slice(0, 5)}
+                </span>
+                <span className="font-mono text-[9px] uppercase tracking-widest text-[var(--color-text-muted)]">
+                  {String(chatItem.messages.length).padStart(2, "0")} MSG
+                </span>
+              </div>
               <p
-                className={`font-serif text-sm truncate ${
+                className={`font-serif text-[13px] leading-snug line-clamp-2 ${
                   activeChatId === chatItem.id
-                    ? "text-slate-800 dark:text-slate-100"
-                    : "text-slate-600 dark:text-slate-300"
+                    ? "text-[var(--color-text)]"
+                    : "text-[var(--color-text-muted)] group-hover:text-[var(--color-text)] transition-colors"
                 }`}
               >
                 {chatItem.heading}
               </p>
-              <p className="font-mono text-xs text-slate-400 mt-0.5">
-                {chatItem.messages.length} msgs
-              </p>
             </button>
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 onDeleteChat(chatItem.id);
               }}
-              className="p-1 mr-2 opacity-0 group-hover:opacity-100
-                text-slate-300 dark:text-slate-500 hover:text-red-400
+              title="Delete chat"
+              className="pressable absolute top-2 right-2 p-1 opacity-0 group-hover:opacity-100
+                text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-bg-secondary)]
+                border border-transparent hover:border-[var(--color-border)]
                 transition-all duration-150 cursor-pointer"
             >
               <svg
@@ -125,6 +142,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 stroke="currentColor"
                 strokeWidth={2}
               >
+                <title>Delete chat</title>
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
