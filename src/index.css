@@ -181,6 +181,11 @@
 		opacity: 0.65;
 	}
 
+	.theme-pure-black .app-shell::before {
+		background: none;
+		opacity: 0;
+	}
+
 	.app-topbar {
 		animation: rise-fade-in var(--dur-entrance) var(--ease-out-expo) both;
 	}

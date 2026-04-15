@@ -158,7 +158,7 @@ const components: Components = {
 
 const Markdown: React.FC<MarkdownProps> = ({ content }) => {
   return (
-    <div className="font-mono text-sm leading-relaxed text-[var(--color-text-muted)] markdown-body">
+    <div className="font-serif text-[15px] leading-relaxed text-[var(--color-text)] markdown-body">
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
         {content}
       </ReactMarkdown>

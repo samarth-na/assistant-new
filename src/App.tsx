@@ -380,7 +380,11 @@ function App() {
 
       <div className="flex-1 min-w-0 flex flex-col h-full">
         <div className="app-topbar flex items-center justify-between px-6 h-14 border-b border-[var(--color-border)] bg-[var(--color-bg)]">
-          <div className="flex items-center gap-4">
+          <div
+            className={`flex items-center gap-4 transition-[margin] duration-300 ${
+              sidebarOpen ? "ml-72" : "ml-0"
+            }`}
+          >
             <button
               type="button"
               onClick={() => setSidebarOpen((o) => !o)}
@@ -403,36 +407,35 @@ function App() {
               />
             </svg>
           </button>
+          <button
+            type="button"
+            onClick={handleCycleTheme}
+            className="pressable p-1.5 border border-transparent hover:border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] cursor-pointer transition-colors duration-150"
+            title={`Switch Theme (${theme.replace("-", " ")})`}
+            aria-label={`Switch theme, current ${theme.replace("-", " ")}`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              <title>Switch Theme</title>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 6.75a5.25 5.25 0 110 10.5 5.25 5.25 0 010-10.5zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </button>
           <span className="font-mono text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest">
             v2.1 / System Ready
           </span>
         </div>
 
         <div className="flex items-center gap-4 relative">
-            <button
-              type="button"
-              onClick={handleCycleTheme}
-              className="pressable p-1.5 border border-transparent hover:border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] cursor-pointer transition-colors duration-150"
-              title={`Switch Theme (${theme.replace("-", " ")})`}
-              aria-label={`Switch theme, current ${theme.replace("-", " ")}`}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.5}
-              >
-                <title>Switch Theme</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 6.75a5.25 5.25 0 110 10.5 5.25 5.25 0 010-10.5zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </button>
-
             <button
               type="button"
               onClick={() => setRightSidebarOpen((o) => !o)}
