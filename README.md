@@ -1,11 +1,3 @@
----
-id: assistant
-aliases:
-    - chatbot
-tags:
-    - readme
----
-
 # Local AI Assistant
 
 A powerful, privacy-first AI chat application that runs entirely on your machine. No cloud dependencies, no data leaves your device — just you and your AI assistant.
@@ -69,19 +61,16 @@ Start the development server:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and start chatting!
+Open [http://localhost:5137](http://localhost:5137) and start chatting!
 
 ## Available Models
 
 Head to [Ollama Library](https://ollama.com/library) to browse and install models. Popular choices:
 
-- **Llama 3.2** — General purpose, excellent reasoning
-- **Qwen 2.5** — Strong coding capabilities
-- **DeepSeek R1** — Advanced reasoning tasks
+- *deepseek r1:3b** — General purpose, excellent reasoning
+- **Qwen 3.5:4b** — Strong coding capabilities
 
 ---
-
-## Roadmap
 
 See [Issues](https://github.com/anomalyco/assistant/issues) for planned features and progress.
 
